@@ -1,7 +1,9 @@
-const char* host = "api.thingspeak.com";
-String url = "/update?api_key=V0HR1V2GOSRQ7K5B";   // Your Own Key here
+// const char* host = "api.thingspeak.com";
+// String url = "/update?api_key=V0HR1V2GOSRQ7K5B";   // Your Own Key here
+const char* host = "maker.ifttt.com";
+String url = "/trigger/temp_received/with/key/b2DNY6DrPYNLfRfS_S4Wma";
 const int httpPort = 80;
-int interval = 60000;
+int interval = 5000;
 
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
@@ -22,7 +24,8 @@ String working() {
   sensors.requestTemperatures();
   temp = sensors.getTempCByIndex(0);
   
-  return(String("field1=")+String(temp));
+  // return(String("field1=")+String(temp));
+  return(String("value1=")+String(temp));
 }
 
 void delivering(String payload) { 
@@ -34,7 +37,8 @@ void delivering(String payload) {
     Serial.println(payload);
     return;
   }
-  String getheader = "GET "+ String(url) +"&"+ String(payload) +" HTTP/1.1";
+  // String getheader = "GET "+ String(url) +"&"+ String(payload) +" HTTP/1.1";
+  String getheader = "GET "+ String(url) +"?"+ String(payload) +" HTTP/1.1";
   client.println(getheader);
   client.println("User-Agent: ESP8266 Seok Jin Ha");  
   client.println("Host: " + String(host));  
@@ -64,7 +68,7 @@ void connect_ap() {
 
 void setup() {
   Serial.begin(115200);
-  Serial.println("ESPArduinoThingSpeak.cpp - 2018/3/10");
+  Serial.println("IFTTT Webhooks - 2018/3/17");
   sensors.begin();
   connect_ap();
 
